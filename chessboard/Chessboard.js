@@ -1,5 +1,13 @@
+const King = require("../pieces/King");
+const Queen = require("../pieces/Queen");
+const Bishop = require("../pieces/Bishop");
+const Knight = require("../pieces/Knight");
+const Rook = require("../pieces/Rook");
+const Pawn = require("../pieces/Pawn");
+
 class Chessboard {
     constructor() {
+        this.turn = "white";
         this.board = this.createBoard();
     }
 
@@ -61,6 +69,20 @@ class Chessboard {
         }
         return chessboard;
     }
+    displayBoard(){
+        let board = this.getBoard();
+        for (let row = 0; row < 8; row++) {
+            let rowString = '';
+            for (let col = 0; col < 8; col++) {
+                if(board[row][col] != ''){
+                    rowString += " "+board[row][col]+" ";
+                }else{
+                    rowString += " _ ";
+                }
+            }
+            console.log(rowString)
+        }
+    }
     getFen() {
         let board = this.getBoard()
         let fen = '';
@@ -88,7 +110,93 @@ class Chessboard {
     
         return fen;
     }
-    setPosition(fen){
+    loadFen(fen) {
+        this.clear();
+        if (fen != null) {
+            let formatedFen = this.formatFen(fen);
+            let fenParts = formatedFen.split('/');
+
+            let turn = this.checkTurn(fen);
+            this.changeTurn(turn);
+
+
+            fenParts.forEach((fenRow, rowIdx) => {
+                let colIdx = 0;
+                fenRow.split('').forEach((char) => {
+                    if (/\d/.test(char)) {
+                        colIdx += parseInt(char, 10);
+                    } else {
+                        const piece = this.createPiece(char);
+                        if (piece) {
+                            const square = String.fromCharCode('a'.charCodeAt(0) + colIdx) + (8 - rowIdx);
+                            this.placePiece(piece, square);
+                        }
+                        colIdx++;
+                    }
+                });
+            });
+            return;
+        }
+        return "Please enter a FEN";
+    }
+    createPiece(fenChar){
+        switch (fenChar) {
+            case 'K':
+                return new King("white");
+            case 'Q':
+                return new Queen("white");
+            case 'R':
+                return new Rook("white");
+            case 'B':
+                return new Bishop("white");
+            case 'N': 
+                return new Knight("white");
+            case 'P':
+                return new Pawn("white");
+
+            case 'k':
+                return new King("black");
+            case 'q':
+                return new Queen("black");
+            case 'r':
+                return new Rook("black");
+            case 'b':
+                return new Bishop("black");
+            case 'n': 
+                return new Knight("black");
+            case 'p':
+                return new Pawn("black");
+            default:
+                return null;
+        }
+    }
+    formatFen(fen) {
+        let index = 0;
+        for (const char of fen) {
+            if(char == " "){
+                return fen.slice(0, index)
+            }
+            index++;
+        }
+    }
+    checkTurn(fen){
+        let index = 0;
+        for (const char of fen) {
+            if(char == " "){
+                return fen.slice(index+1, index+2)
+            }
+            index++;
+        }
+    }
+    changeTurn(turn){
+        if(turn[0] == 'b'){
+            this.turn = "black";
+        }else{
+            this.turn = "white";
+        }
+    }
+    clear(){
+        this.board = this.createBoard();
     }
 }
 

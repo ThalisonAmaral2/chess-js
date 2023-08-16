@@ -1,5 +1,7 @@
-class Knight {
+const Piece =  require('./Piece')
+class Knight extends Piece {
     constructor(side){
+        super();
         this.side = side;
         this.symbol = "N";
         this.name = "knight"
@@ -9,9 +11,6 @@ class Knight {
             [ 1,-2],        [ 1, 2],
                 [ 2,-1],[ 2, 1],
         ]
-    }
-    updateLocation(square){
-        this.location = square;
     }
 }
 

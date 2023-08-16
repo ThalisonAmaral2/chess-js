@@ -10,7 +10,6 @@ const Pawn = require("../pieces/Pawn");
 class Game extends Chessboard {
     constructor(){
         super();
-        this.turn = "white";
         this.whiteCastling = "KQ";
         this.blackCastling = "kq";
         this.pgn = '';
@@ -89,7 +88,6 @@ class Game extends Chessboard {
         }
     }
     selectPiece(originSquare){
-        
     }
     isMoveLegal(piece, targetSquare){
         return true;
@@ -118,14 +116,6 @@ class Game extends Chessboard {
     setPGN() {
         let moveNumber = this.getMoveNumber();
     }
-    
 }
 
-
-const game = new Game();
-game.initialPosition();
-game.movePiece("e2", "e4");
-game.movePiece("e7", "e5");
-game.movePiece("f1", "b5");
-console.log(game.getPiece("g1"));
-
+module.exports = Game;
