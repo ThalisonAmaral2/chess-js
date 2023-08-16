@@ -1,5 +1,5 @@
 # chess-js
-Chess Library that contains Match Rules and Pieces Moves Validation in Javascript. Soon, GameAnalysis and BoardEditor classes will be added.
+Chess Library that contains Chess Game Rules and Pieces Movement Validation in Javascript. Soon, GameAnalysis and BoardEditor classes will be added.
 
 ## Installation
 ```
